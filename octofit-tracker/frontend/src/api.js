@@ -1,8 +1,12 @@
 const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim()
+const frontendHostname = typeof window !== 'undefined' ? window.location.hostname : ''
+const codespaceApiUrl = frontendHostname.match(/^(.+)-5173\.app\.github\.dev$/)
+  ? `https://${frontendHostname.replace(/-5173\.app\.github\.dev$/, '-8000.app.github.dev')}`
+  : ''
 
 export const apiBaseUrl = codespaceName
   ? `https://${codespaceName}-8000.app.github.dev`
-  : 'http://localhost:8000'
+  : codespaceApiUrl || 'http://localhost:8000'
 
 export function recordsFromResponse(payload) {
   if (Array.isArray(payload)) return payload
